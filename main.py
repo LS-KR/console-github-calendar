@@ -17,7 +17,8 @@ def getCalendar(username: str, week = 7):
     res = requests.get(uri)
     data = json.loads(res.content)
     contributions = data['contributions']
-    weeks = contributions[-week - 1: -1]
+    weeks = list(contributions[-week: -1])
+    weeks.append(contributions[-1])
     _max = 0
     ret = "╔═" + "══" * week + "═╗\n"
     for w in weeks:
@@ -27,7 +28,7 @@ def getCalendar(username: str, week = 7):
     for i in range(0, 7):
         ret += "║ "
         for w in weeks:
-            if len(w) < i:
+            if len(w) <= i:
                 ret += "\033[0m  "
                 continue
             d = w[i]
