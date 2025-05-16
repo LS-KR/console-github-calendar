@@ -19,13 +19,16 @@ def getCalendar(username: str, week = 7):
     contributions = data['contributions']
     weeks = contributions[-week - 1: -1]
     _max = 0
+    ret = "╔═" + "══" * week + "═╗\n"
     for w in weeks:
         for d in w:
             if d['count'] > _max:
                 _max = d['count']
     for i in range(0, 7):
+        ret += "║ "
         for w in weeks:
             if len(w) < i:
+                ret += "\033[0m  "
                 continue
             d = w[i]
             count = d['count']
@@ -33,7 +36,8 @@ def getCalendar(username: str, week = 7):
                 ret += levels[0]
             else:
                 ret += levels[int((count - 1) / _max * 3.9 + 1)]
-        ret += "\033[0m\n"
+        ret += "\033[0m ║\n"
+    ret += "╚═" + "══" * week + "═╝\n"
     return ret
 
 if __name__ == "__main__":
